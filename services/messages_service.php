@@ -1,13 +1,13 @@
 <?php
-class ProjectProposalsService
+class MessagesService
 {
     function __construct() {}
   
-    function getProjectProposals($pid)
+    function getProjectMessages($pid)
     {
         $response = file_get_contents("https://idigue.com/api/projects_api.php");
         $response = json_decode($response);
-        $proposals = $response->data;
-        return $proposals;
+        $messages = $response->data;
+        return $messages;
     }
 }

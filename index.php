@@ -8,8 +8,9 @@ session_start();
 ob_start();
 require_once "dbcontroller.php";
 require_once "services/projects_service.php";
-$db_handle = new DBController();
 $projectsService = new ProjectsService();
+$db_handle = new DBController();
+
 $user_check = $_SESSION['login_user'];
 $userid = $_SESSION['login_user'][1];
 $catalogs = $db_handle->runQuery("select * from `subcatalog`");

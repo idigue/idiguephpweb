@@ -98,28 +98,27 @@ $tabs = $db_handle->runQuery("select * from `tabs`");
                             //   group by proposals.pid;";
                             //   $projects = $db_handle->runQuery($sqlprojects);
                             $projects = $projectsService->getProjects();
-                            if (count($projects) > 0) :
-                                foreach ($projects as $project) :
-                                    echo "<td><a href='projectdetails.php?id=" . $project['id'];
+                                for($i = 0; $i < count($projects); $i++) {
+                                    if(isset($projects)){
+                                        $project = $projects[$i];
+                                    echo "<td><a href='projectdetails.php?id=" . $project->id;
                                     echo "'>
-                    " . $project['name'];
+                    " . $project->name;
                                     echo "</a>";
                                     echo "</td><td>
-                    " . $project['proposalscount'];
+                    " . $project->proposalscount;
                                     echo "</td>";
                                     echo "</td><td>
-                    " . $project['owner'];
+                    " . $project->owner;
                                     echo "</td>";
                                     echo "</div>
                 </div>
                 </td>
             </tr>";
-                                endforeach;
-                            else : echo "<tr>
-                <td>Project Lists</td>
-            </tr>";
-                            endif ?>
-                        </tbody>
+                                    }}?>
+                
+                          
+                      </tbody>
                     </table>
                 </form>
             </div>

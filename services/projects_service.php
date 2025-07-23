@@ -1,7 +1,7 @@
 <?php
 $response = file_get_contents("https://idigue.com/api/projects_api.php");
 $response = json_decode($response);
-var_dump($response->data);
+//var_dump($response->data);
 class ProjectsService
 {
     function __construct() {}

@@ -1,49 +1,7 @@
-<?php include 'components/head.php'; ?>
-<?php include 'components/breadcrumb.php'; ?>
-<?php
-require_once 'services/projects_service.php';
-require_once 'services/messages_service.php';
-require_once "services/projects_service.php";
-require_once "services/projects_proposals_service.php";
-$projectsService = new ProjectsService();
-$messagesService = new MessagesService();
-$projectProposalsService = new ProjectProposalsService();
-$id = $_GET['id'];
-if ($db instanceof mysqli) {
-    $uid = "2";
-    if (isset($_SESSION['login_user'])) {
-        $uid = $_SESSION['login_user'][0];
-    }
-    $project_array = $projectsService->getProject($id);
-    var_dump($project_array);
-    $messages = $messagesService->getProjectMessages($db, $id);
-    $proposals = $projectProposalsService->getProjectProposals($db, $id);
-    if ($_POST) {
-        if (isset($_POST['confirm'])) {
-            $pid = $_POST['pid'];
-            if (!isset($_POST['proposalid'])) {
-                $message = "No proposal selected";
-            } else {
-                $status = $_POST['status'];
-                if ($status == "new" && isset($_POST['proposalid'])) {
-                    var_dump($_POST['proposalid']);
-                    $proposalid = $_POST['proposalid'];
-                    // selectproposal($db, $pid, $proposalid);
-                    header("Location:/projectdetails.php?id=$pid");
-                    die;
-                } else {
-                    header("Location:/projectdetails.php?id=$pid");
-                    die;
-                }
-            }
-        }
-    }
-}
-?>
 <!doctype html>
 <html lang="en">
-<?php include 'head.php'; ?>
-<?php include 'breadcrumb.php'; ?>
+<?php include 'components/head.php'; ?>
+<?php include 'components/breadcrumb.php'; ?>
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="index.php">Projects</a></li>
@@ -58,34 +16,73 @@ if ($db instanceof mysqli) {
     </ol>
 </nav>
 <span id='message' style="color:red;"><?php echo $message ?></span>
+
+<?php
+require_once 'services/projects_service.php';
+require_once 'services/messages_service.php';
+require_once "services/projects_service.php";
+require_once "services/projects_proposals_service.php";
+$projectsService = new ProjectsService();
+$messagesService = new MessagesService();
+$projectProposalsService = new ProjectProposalsService();
+$id = $_GET['id'];
+$uid = "2";
+if (isset($_SESSION['login_user'])) {
+    $uid = $_SESSION['login_user'][0];
+}
+$project_array = $projectsService->getProject($id);
+$messages = $messagesService->getProjectMessages($db, $id);
+$proposals = $projectProposalsService->getProjectProposals($db, $id);
+if ($_POST) {
+    if (isset($_POST['confirm'])) {
+        $pid = $_POST['pid'];
+        if (!isset($_POST['proposalid'])) {
+            $message = "No proposal selected";
+        } else {
+            $status = $_POST['status'];
+            if ($status == "new" && isset($_POST['proposalid'])) {
+                var_dump($_POST['proposalid']);
+                $proposalid = $_POST['proposalid'];
+                // selectproposal($db, $pid, $proposalid);
+                header("Location:/projectdetails.php?id=$pid");
+                die;
+            } else {
+                header("Location:/projectdetails.php?id=$pid");
+                die;
+            }
+        }
+    }
+}
+?>
+
 <div class="container">
     <div class="row">
         <div class="col">
-            <h3>Project Title: <?php echo $project_array["name"] ?></h3>
+            <h3>Project Title: <?php echo $project_array->name?></h3>
         </div>
     </div>
     <div class="row">
 
         <div class="col">
-            Status: <?php echo $project_array["status"] ?>
+            Status: <?php echo $project_array->status ?>
         </div>
         <div class="col">
-            Budget: <?php echo $project_array["budget"] ?> $
+            Budget: <?php echo $project_array->budget?> $
         </div>
         <div class="col">
-            Time: <?php echo $project_array["timecreated"] ?>
+            Time: <?php echo $project_array->timecreated ?>
         </div>
         <div class="col">
-            Category: <?php echo $project_array["cat"] ?>
+            Category: <?php echo $project_array->cat ?>
         </div>
     </div>
     <div class="row">
         <div class="col">
-            Details: <?php echo $project_array["descriptions"] ?>
+            Details: <?php echo $project_array->descriptions ?>
         </div>
 
         <div class="col">
-            Stack: <?php echo $project_array["stack"] ?>
+            Stack: <?php echo $project_array->stack ?>
         </div>
     </div>
 </div>
@@ -120,7 +117,7 @@ if ($db instanceof mysqli) {
                     <?php
                     if (count($proposals) > 0) :
                         foreach ($proposals as $proposal) :
-                            $attids = $proposal["attids"];
+                            $attids = $proposal->attids;
                             $imgs = explode(",", $attids);
                     ?>
 
@@ -138,9 +135,9 @@ if ($db instanceof mysqli) {
                             <input type="hidden" name="proposalid" value="<?php echo $proposal["id"] ?>">
                             <input type="hidden" name="status" value="<?php echo $project_array["status"] ?>">
 
-                            <td><?php echo $proposal["price"]; ?></td>
-                            <td><?php echo $proposal["timeframe"]; ?></td>
-                            <td><?php echo $proposal["author"]; ?></td>
+                            <td><?php echo $proposal->price; ?></td>
+                            <td><?php echo $proposal->timeframe; ?></td>
+                            <td><?php echo $proposal->author; ?></td>
                             <td>
 
                                 <div class="input-group">
@@ -158,7 +155,7 @@ if ($db instanceof mysqli) {
             </tr>
         <?php endif ?>
         <tr>
-            <?php if ($project_array["status"] == "new") : ?>
+            <?php if ($project_array->status == "new") : ?>
                 <td><button type="submit" name="confirm" class="btn btn-success">Confirm Selection</button></td>
             <?php else : ?>
                 <td>

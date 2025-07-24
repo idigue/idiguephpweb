@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
-<?php include 'head.php'; ?>
-<?php include 'breadcrumb.php'; ?>
+<?php include 'components/head.php'; ?>
+<?php include 'components/breadcrumb.php'; ?>
 <?php
 ob_start();
 session_start();

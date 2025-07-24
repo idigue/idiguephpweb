@@ -39,4 +39,5 @@ ob_start();
 session_start();
 include('Logger.php');
 require_once 'dbcontroller.php';
+$db_handle = new DBController();
 ?>
